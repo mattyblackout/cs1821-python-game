@@ -1,2 +1,1 @@
-import simplegui 
-
+import simplegui
