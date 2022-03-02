@@ -1,1 +1,0 @@
-import simpleguitk as simplegui
