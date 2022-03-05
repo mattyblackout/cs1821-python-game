@@ -1,5 +1,5 @@
 # cs1821-python-game
-This Repo contains the code for the CS1821 Python Games Project, a 2D Osmos clone built in Python using the simpleguitk library.
+This Repo contains the code for the CS1821 Python Games Project, a 2D Osmos clone built in Python using the ``` simpleguitk ``` library.
 
 ## Project Requirements
 The requirements of the project are shown below:
@@ -12,7 +12,7 @@ The requirements of the project are shown below:
 - The program displays on the canvas an appropriate text for both the lives and the score.
 
 ### 2.2 Vectors
-- The programme must use the Vector class (developed during lectures and lab sessions) to position each sprite on the canvas.
+- The programme must use the ``` Vector ``` class (developed during lectures and lab sessions) to position each sprite on the canvas.
 - Some of the game sprites are subject to a velocity vector and move accordingly on the canvas.
 
 ### 2.3 Game Initialisation
@@ -41,8 +41,8 @@ The sprite animation depends on the control (e.g., a character can be moving to 
 - The program follows an object-oriented approach.
 - The sprite controlled by the player should be wrapped inside a ``` Player ``` class.
 - Other game sprites should be wrapped inside appropriate classes.
-- The collisions between the sprite controlled by the player and other sprites should be wrapped inside an Interaction class.
-- The main aspects of the game (state variables, or constants for canvas dimensions, images, etc.) should be wrapped inside a Game class. This class can also encapsulate the game loop.
+- The collisions between the sprite controlled by the player and other sprites should be wrapped inside an ``` Interaction ``` class.
+- The main aspects of the game (state variables, or constants for canvas dimensions, images, etc.) should be wrapped inside a ``` Game ``` class. This class can also encapsulate the game loop.
 
 ## Additional features
 40% of the credit for the project is based on the implementation of additional features. A list of suggestions is given below. The amount of credit to be granted will be determined by the module staff based on the perceived effort invested into implementing these features.
