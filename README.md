@@ -2,7 +2,7 @@
 This Repo contains the code for the CS1821 Python Games Project, a 2D Osmos clone built in Python using the ``` simpleguitk ``` library.
 
 ## Project Requirements
-The requirements of the project are shown below:
+The requirements of the project are shown below.
 
 ### 2.1 User interface
 - The program displays a welcome screen when it starts.
