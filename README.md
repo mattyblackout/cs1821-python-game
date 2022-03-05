@@ -12,7 +12,7 @@ The requirements of the project are shown below:
 - The program displays on the canvas an appropriate text for both the lives and the score.
 
 ### 2.2 Vectors
-- The programme must use the ``` Vector ``` class (developed during lectures and lab sessions) to position each sprite on the canvas.
+- The program must use the ``` Vector ``` class (developed during lectures and lab sessions) to position each sprite on the canvas.
 - Some of the game sprites are subject to a velocity vector and move accordingly on the canvas.
 
 ### 2.3 Game Initialisation
