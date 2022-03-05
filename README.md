@@ -39,7 +39,7 @@ The sprite animation depends on the control (e.g., a character can be moving to 
 
 ### 2.7 Object-oriented approach
 - The program follows an object-oriented approach.
-- The sprite controlled by the player should be wrapped inside a Player class.
+- The sprite controlled by the player should be wrapped inside a ``` Player ``` class.
 - Other game sprites should be wrapped inside appropriate classes.
 - The collisions between the sprite controlled by the player and other sprites should be wrapped inside an Interaction class.
 - The main aspects of the game (state variables, or constants for canvas dimensions, images, etc.) should be wrapped inside a Game class. This class can also encapsulate the game loop.
@@ -50,8 +50,8 @@ The sprite animation depends on the control (e.g., a character can be moving to 
 - Animated backgrounds or other interesting animation effects (absorptions, etc).
 - Two-player cooperative or competitive game.
 - Some of the non-player motes move with acceleration.
-- Power-ups adding features such as short-term protection against absorption, extra lives, increased/decreased gravitational pull, &c.
-- Other pick-features such as enabling wrapping at the screen edges, speeding up or slowing down game play, shrinking all motes on screen, &c.
+- Power-ups adding features such as short-term protection against absorption, extra lives, increased/decreased gravitational pull, etc.
+- Other pick-features such as enabling wrapping at the screen edges, speeding up or slowing down game play, shrinking all motes on screen, etc.
 - Multiplayer modes.
 - Static on-screen features such as walls.
 - A game world larger than the screen. The view should track the player as they move.
