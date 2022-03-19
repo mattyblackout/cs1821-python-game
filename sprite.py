@@ -6,9 +6,9 @@ try:
 except ImportError:
     import simpleguitk as simplegui
 
-WIDTH = 500
-HEIGHT = 500
-CANVAS_DIMS = (600, 600)
+WIDTH = 1315
+HEIGHT = 790
+CANVAS_DIMS = (WIDTH, HEIGHT)
 
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
 ballradius = 20 # edit to make the sprite big/small
@@ -23,14 +23,16 @@ STEP = 0
 BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/96/69/32/966932addf40da9dccfacad5d09b15da.jpg')
 
 # Global variables
-img_dest_dim = (50,50) #size of sprite
+radius= 100
+img_dest_dim = (radius,radius) #size of sprite
 img_pos = CANVAS_DIMS[0]/2, 2*CANVAS_DIMS[1]/3
 img_rot = 0
 
-
+newlist = []
 
 class Wheel:
-    def __init__(self, pos, radius=(1,1)):
+    global radius
+    def __init__(self, pos, radius):
         self.pos = pos
         self.vel = Vector()
         self.radius = radius
@@ -39,13 +41,14 @@ class Wheel:
     def draw(self, canvas):
         global img_rot
         img_rot += STEP
-        canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, self.pos.get_p(), img_dest_dim, img_rot)
+        canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, self.pos.get_p(), (self.radius,self.radius), img_rot)
     
     def update(self):
         self.pos.add(self.vel)
         self.vel.multiply(0.85)
+        #self.img_dest_dim = radius
         #self.pos = ballpos
-    
+       
 class Keyboard:
     
     def __init__(self):
@@ -71,7 +74,7 @@ class Keyboard:
             self.down = True
 
 
-    def keyUp(self, key):#
+    def keyUp(self, key):
         global STEP
         STEP = 0
         if key == simplegui.KEY_MAP['right']:
@@ -103,20 +106,20 @@ class Interaction:
         if self.keyboard.down:
             self.wheel.vel.add(Vector(0, 1))
 
-        if wheel.pos.y >= CANVAS_DIMS[1]-50:
-            wheel.pos.y = CANVAS_DIMS[1]-50
+        if wheel.pos.y >= CANVAS_DIMS[1]-25:
+            wheel.pos.y = CANVAS_DIMS[1]-25
 
-        if wheel.pos.y <= CANVAS_DIMS[1]-550:
-            wheel.pos.y = CANVAS_DIMS[1]-550
+        if wheel.pos.y <= CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25):
+            wheel.pos.y = CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25)
 
-        if wheel.pos.x <= CANVAS_DIMS[0]-550:
-            wheel.pos.x = CANVAS_DIMS[0]-550
+        if wheel.pos.x <= CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25):
+            wheel.pos.x = CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25)
 
-        if wheel.pos.x >= CANVAS_DIMS[0]-50:
-            wheel.pos.x = CANVAS_DIMS[0]-50
+        if wheel.pos.x >= CANVAS_DIMS[0]-25:
+            wheel.pos.x = CANVAS_DIMS[0]-25
 
 kbd = Keyboard()
-wheel = Wheel(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]-65), 40)
+wheel = Wheel(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 20)
 inter = Interaction(wheel, kbd)
         
 class Circle():
@@ -132,7 +135,6 @@ class Circle():
         canvas.draw_circle(self.centerpoint, self.radius1, self.linewidth, self.linecolor, self.fillcolor)     
 
 class Food():
-
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor):
         Circle.__init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor)
         self.is_visible = True
@@ -143,11 +145,12 @@ class Food():
             
     def update(self):
         global ballradius
-        if self.is_visible and distance(ballpos, self.centerpoint) <= ballradius + self.radius1: #checks if the main sprite has touched the center point of the smaller balls 
-            self.is_visible = False
-            ballradius = math.sqrt(ballradius**2 + self.radius1**2) # so radius1 is the radius of the 
+        if self.is_visible and distance(newlist, self.centerpoint) <= wheel.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls 
+            if wheel.radius*0.5 >= self.radius1:    
+                self.is_visible = False
+                wheel.radius = math.sqrt(wheel.radius**2 + self.radius1**2) #so radius1 is the radius of the 
 
-def distance(a, b): # finds radius and increases it y the size of the 
+def distance(a, b): #finds radius and increases it y the size of the 
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
 
@@ -157,6 +160,7 @@ def mousehandler(pos):#this allows the mouse to drag
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
+    
             
             
 '''def on_ground():   
@@ -171,11 +175,15 @@ def mousehandler(pos):#this allows the mouse to drag
 
 
 def draw(canvas):
-    
-    canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
+    newlist.clear()
+    #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
     
     inter.update()
     
+    newlist.append(wheel.pos.x)
+    newlist.append(wheel.pos.y)
+    print (newlist)
+    print(wheel.radius)
     wheel.update()
     
     wheel.draw(canvas)
@@ -187,11 +195,11 @@ def draw(canvas):
 
 balls = []
 #This generates the food
-for i in range (100): #make this bigger to increase food
-    radius1 = random.randint(1,10) # radius of the blob circles
+for i in range (50): #make this bigger to increase food
+    radius1 = random.randint(1,50) # radius of the blob circles
     x = random.randint(radius1, WIDTH-radius1) #finding position of each circle
-    y = random.randint(radius1, HEIGHT-radius1) 
-    balls.append(Food((x, y), radius1, 5, 'red', 'Red'))    
+    y = random.randint(radius1, HEIGHT-radius1)
+    balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
 
 frame = simplegui.create_frame('Interactions', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('#2C6A6A')
