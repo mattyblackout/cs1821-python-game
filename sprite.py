@@ -149,24 +149,18 @@ def distance(a, b): #finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
 
-
 def mousehandler(pos):#this allows the mouse to drag
     global ballpos, ballcolour
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
-    
-            
-            
+
+
 '''def on_ground():   
     if wheel.pos.y == CANVAS_DIMS[1]-70:
         return True
     else:
         return False'''
-    
-    
-
-
 
 
 def draw(canvas):
