@@ -1,10 +1,5 @@
-import math
-import random
+import math, random, simpleguitk as simplegui
 from vectorclass import Vector
-try:
-    import simplegui
-except ImportError:
-    import simpleguitk as simplegui
 
 WIDTH = 1315
 HEIGHT = 790
