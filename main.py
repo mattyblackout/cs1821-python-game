@@ -1,10 +1,5 @@
-import math
-import random
+import math, random, simpleguitk as simplegui
 from vectorclass import Vector
-try:
-    import simplegui
-except ImportError:
-    import simpleguitk as simplegui
 
 WIDTH = 1315
 HEIGHT = 790
@@ -20,7 +15,7 @@ IMG_DIMS = (610, 610)
 
 STEP = 0
 
-#BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/96/69/32/966932addf40da9dccfacad5d09b15da.jpg')
+BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/96/69/32/966932addf40da9dccfacad5d09b15da.jpg')
 
 # Global variables
 radius= 100
