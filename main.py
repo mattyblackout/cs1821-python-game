@@ -7,7 +7,6 @@ CANVAS_DIMS = (WIDTH, HEIGHT)
 
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
 ballradius = 20 # edit to make the sprite big/small
-ballcolour = "Blue"
 
 IMG = simplegui.load_image('https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/05/8d/e8/058de8d2-7963-1c7b-8865-02d52b222aa2/OsmosOSX.png/1200x630bb.png')
 IMG_CENTRE = (300, 300)
@@ -15,17 +14,17 @@ IMG_DIMS = (610, 610)
 
 STEP = 0
 
-BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/96/69/32/966932addf40da9dccfacad5d09b15da.jpg')
+BACKGROUNDIMG = simplegui.load_image('https://www.teahub.io/photos/full/215-2153112_galaxy-tumblr-png-purple-galaxy-background.png')
 
 # Global variables
-radius= 100
+radius = 100
 img_dest_dim = (radius,radius) #size of sprite
 img_pos = CANVAS_DIMS[0]/2, 2*CANVAS_DIMS[1]/3
 img_rot = 0
 
 newlist = []
 
-class Wheel:
+class Player:
     global radius
     def __init__(self, pos, radius):
         self.pos = pos
@@ -55,35 +54,31 @@ class Keyboard:
 
     def keyDown(self, key):
         global STEP
-        if key == simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['right'] or key == simplegui.KEY_MAP['d']:
             self.right = True
-            STEP = 0
-        elif key == simplegui.KEY_MAP['left']:
-            STEP = 0
+        elif key == simplegui.KEY_MAP['left'] or key == simplegui.KEY_MAP['a']:
             self.left = True
         elif key == simplegui.KEY_MAP['space']:
             self.space = True
-        elif key == simplegui.KEY_MAP['up']:
+        elif key == simplegui.KEY_MAP['up'] or key == simplegui.KEY_MAP['w']:
             self.up = True
-        elif key == simplegui.KEY_MAP['down']:
+        elif key == simplegui.KEY_MAP['down'] or key == simplegui.KEY_MAP['s']:
             self.down = True
 
 
     def keyUp(self, key):
         global STEP
         STEP = 0
-        if key == simplegui.KEY_MAP['right']:
+        if key == simplegui.KEY_MAP['right'] or key == simplegui.KEY_MAP['d']:
             self.right = False
-        elif key == simplegui.KEY_MAP['left']:
+        elif key == simplegui.KEY_MAP['left'] or key == simplegui.KEY_MAP['a']:
             self.left = False
         elif key == simplegui.KEY_MAP['space']:
             self.space = False
-        elif key == simplegui.KEY_MAP['up']:
+        elif key == simplegui.KEY_MAP['up'] or key == simplegui.KEY_MAP['w']:
             self.up = False
-        elif key == simplegui.KEY_MAP['down']:
+        elif key == simplegui.KEY_MAP['down'] or key == simplegui.KEY_MAP['s']:
             self.down = False
-
-
 
 
 class Interaction:
@@ -100,22 +95,26 @@ class Interaction:
             self.wheel.vel.add(Vector(0, -1))
         if self.keyboard.down:
             self.wheel.vel.add(Vector(0, 1))
+        if self.keyboard.space:
+            self.wheel.vel.multiply(1.1)
+            self.wheel.radius-=0.1
 
-        if wheel.pos.y >= CANVAS_DIMS[1]-25:
-            wheel.pos.y = CANVAS_DIMS[1]-25
 
-        if wheel.pos.y <= CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25):
-            wheel.pos.y = CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25)
+        if player.pos.y >= CANVAS_DIMS[1]-25:
+            player.pos.y = CANVAS_DIMS[1]-25
 
-        if wheel.pos.x <= CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25):
-            wheel.pos.x = CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25)
+        if player.pos.y <= CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25):
+            player.pos.y = CANVAS_DIMS[1]-(CANVAS_DIMS[1]-25)
 
-        if wheel.pos.x >= CANVAS_DIMS[0]-25:
-            wheel.pos.x = CANVAS_DIMS[0]-25
+        if player.pos.x <= CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25):
+            player.pos.x = CANVAS_DIMS[0]-(CANVAS_DIMS[0]-25)
+
+        if player.pos.x >= CANVAS_DIMS[0]-25:
+            player.pos.x = CANVAS_DIMS[0]-25
 
 kbd = Keyboard()
-wheel = Wheel(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 20)
-inter = Interaction(wheel, kbd)
+player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 20)
+inter = Interaction(player, kbd)
         
 class Circle():
     
@@ -140,10 +139,10 @@ class Food():
             
     def update(self):
         global ballradius
-        if self.is_visible and distance(newlist, self.centerpoint) <= wheel.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls 
-            if wheel.radius*0.5 >= self.radius1:    
+        if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls 
+            if player.radius*0.5 >= self.radius1:    
                 self.is_visible = False
-                wheel.radius = math.sqrt(wheel.radius**2 + self.radius1**2) #so radius1 is the radius of the 
+                player.radius = math.sqrt(player.radius**2 + self.radius1**2) #so radius1 is the radius of the 
 
 def distance(a, b): #finds radius and increases it y the size of the 
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
@@ -154,14 +153,14 @@ def mousehandler(pos):#this allows the mouse to drag
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
-
-
+    
+                   
 '''def on_ground():   
     if wheel.pos.y == CANVAS_DIMS[1]-70:
         return True
     else:
         return False'''
-
+    
 
 def draw(canvas):
     newlist.clear()
@@ -169,17 +168,16 @@ def draw(canvas):
     
     inter.update()
     
-    newlist.append(wheel.pos.x)
-    newlist.append(wheel.pos.y)
+    newlist.append(player.pos.x)
+    newlist.append(player.pos.y)
     print (newlist)
-    print(wheel.radius)
-    wheel.update()
+    print(player.radius)
+    player.update()
     
-    wheel.draw(canvas)
+    player.draw(canvas)
     for ball in balls:
         ball.update()
         ball.draw(canvas)
-
 
 
 balls = []
@@ -191,7 +189,7 @@ for i in range (50): #make this bigger to increase food
     balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
 
 frame = simplegui.create_frame('Interactions', CANVAS_DIMS[0], CANVAS_DIMS[1])
-frame.set_canvas_background('#2C6A6A')
+frame.set_canvas_background('Black')
 frame.set_mousedrag_handler(mousehandler)
 frame.set_draw_handler(draw)
 frame.set_keydown_handler(kbd.keyDown)
