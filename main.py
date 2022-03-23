@@ -143,6 +143,8 @@ class Food():
             if player.radius*0.5 >= self.radius1:    
                 self.is_visible = False
                 player.radius = math.sqrt(player.radius**2 + self.radius1**2) #so radius1 is the radius of the 
+            else:
+                player.radius = 0.001
 
 def distance(a, b): #finds radius and increases it y the size of the 
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
@@ -165,9 +167,9 @@ def mousehandler(pos):#this allows the mouse to drag
 def draw(canvas):
     newlist.clear()
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
-    
-    inter.update()
-    
+    #if player.radius < 1:
+    #    player.radius = 20
+    inter.update() 
     newlist.append(player.pos.x)
     newlist.append(player.pos.y)
     print (newlist)
@@ -186,7 +188,10 @@ for i in range (50): #make this bigger to increase food
     radius1 = random.randint(1,50) # radius of the blob circles
     x = random.randint(radius1, WIDTH-radius1) #finding position of each circle
     y = random.randint(radius1, HEIGHT-radius1)
-    balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
+    if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
+        if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
+            balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
+
 
 frame = simplegui.create_frame('Interactions', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('Black')
