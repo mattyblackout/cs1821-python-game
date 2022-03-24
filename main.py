@@ -193,7 +193,7 @@ def enemyspawn(): #make this bigger to increase food
 
         radius1 = random.randint(1,50) # radius of the blob circles
         x = random.randint(radius1, WIDTH-radius1) #finding position of each circle
-        y = random.randint(radius1, HEIGHT-radius1)
+        y = random.randint(100, HEIGHT-radius1)
         if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
             if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
                 balls.append(Food((x, y), radius1, 5, 'red', 'Red',Vector(-1,-1)))
