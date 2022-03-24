@@ -37,15 +37,15 @@ class Player:
         global img_rot
         img_rot += STEP
         canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, self.pos.get_p(), (self.radius,self.radius), img_rot)
-    
+
     def update(self):
         self.pos.add(self.vel)
         self.vel.multiply(0.85)
         #self.img_dest_dim = radius
         #self.pos = ballpos
-       
+
 class Keyboard:
-    
+
     def __init__(self):
         self.right = False
         self.left = False
@@ -116,35 +116,35 @@ class Interaction:
 kbd = Keyboard()
 player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50)
 inter = Interaction(player, kbd)
-        
+
 class Circle():
-    
+
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor):
         self.centerpoint = centerpoint
         self.radius1 = radius1
         self.linewidth = linewidth
         self.linecolor = linecolor
         self.fillcolor = fillcolor
-        
+
     def draw(self,canvas):
-        canvas.draw_circle(self.centerpoint, self.radius1, self.linewidth, self.linecolor, self.fillcolor)     
+        canvas.draw_circle(self.centerpoint, self.radius1, self.linewidth, self.linecolor, self.fillcolor)
 
 class Food():
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor):
         Circle.__init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor)
         self.is_visible = True
-        
+
     def draw(self, canvas):
         if self.is_visible:
             Circle.draw(self, canvas)
-            
+
     def update(self):
         global ballradius
-        if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls 
-            if player.radius*0.5 >= self.radius1:    
+        if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls
+            if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
                 player.radius = math.sqrt(player.radius**2 + self.radius1**2)
-                balls.remove(self) #so radius1 is the radius of the 
+                balls.remove(self) #so radius1 is the radius of the
                 enemyspawn()
             else:
                 #player.pos = (250,250)
@@ -152,10 +152,10 @@ class Food():
                 player.pos.x = CANVAS_DIMS[0]/2
                 player.pos.y = CANVAS_DIMS[1]/2
                 player.radius = 50
-                
-                
 
-def distance(a, b): #finds radius and increases it y the size of the 
+
+
+def distance(a, b): #finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
 
@@ -164,9 +164,9 @@ def mousehandler(pos):#this allows the mouse to drag
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
-    
-                   
-'''def on_ground():   
+
+
+'''def on_ground():
     if wheel.pos.y == CANVAS_DIMS[1]-70:
         return True
     else:
@@ -178,20 +178,20 @@ def enemyspawn(): #make this bigger to increase food
         y = random.randint(radius1, HEIGHT-radius1)
         if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
             if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
-                balls.append(Food((x, y), radius1, 5, 'red', 'Red'))    
+                balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
 
 def draw(canvas):
     newlist.clear()
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
     #if player.radius < 1:
     #    player.radius = 20
-    inter.update() 
+    inter.update()
     newlist.append(player.pos.x)
     newlist.append(player.pos.y)
     print (newlist)
     print(player.radius)
     player.update()
-    
+
     player.draw(canvas)
     for ball in balls:
         ball.update()
@@ -199,7 +199,7 @@ def draw(canvas):
 
     print (len(balls))
 
-    
+
 for i in range (50):
     enemyspawn()
 
