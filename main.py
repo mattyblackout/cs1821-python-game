@@ -1,5 +1,4 @@
 import math, random, simpleguitk as simplegui
-
 from vectorclass import Vector
 
 WIDTH = 1315
