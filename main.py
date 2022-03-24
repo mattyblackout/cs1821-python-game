@@ -1,4 +1,5 @@
 import math, random, simpleguitk as simplegui
+from turtle import circle
 from vectorclass import Vector
 
 WIDTH = 1315
@@ -8,13 +9,20 @@ CANVAS_DIMS = (WIDTH, HEIGHT)
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
 ballradius = 20 # edit to make the sprite big/small
 
+LIVES_IMG = simplegui.load_image('https://image.shutterstock.com/image-vector/heart-pixel-icon-vector-illustration-260nw-413867536.jpg')
+LIVES_CENTRE = (100,100)
+LIVES_DIMS = (600, 600)
+
 IMG = simplegui.load_image('https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/05/8d/e8/058de8d2-7963-1c7b-8865-02d52b222aa2/OsmosOSX.png/1200x630bb.png')
 IMG_CENTRE = (300, 300)
 IMG_DIMS = (610, 610)
 
-STEP = 0
 
-BACKGROUNDIMG = simplegui.load_image('https://www.teahub.io/photos/full/215-2153112_galaxy-tumblr-png-purple-galaxy-background.png')
+
+STEP = 0
+#https://spng.pngfind.com/pngs/s/100-1001849_pixelated-png-heart-pixel-art-png-transparent-png.png
+#http://commondatastorage.googleapis.com/codeskulptor-assets/gutenberg.jpg
+BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/9a/f2/52/9af25223f0696aea6cc6183b0e52a48e.jpg')
 
 # Global variables
 radius = 100
@@ -27,11 +35,12 @@ balls = []
 
 class Player:
     global radius
-    def __init__(self, pos, radius):
+    def __init__(self, pos, radius,lives):
         self.pos = pos
         self.vel = Vector()
         self.radius = radius
         self.colour = 'White'
+        self.lives = lives
 
     def draw(self, canvas):
         global img_rot
@@ -114,32 +123,40 @@ class Interaction:
             player.pos.x = CANVAS_DIMS[0]-25
 
 kbd = Keyboard()
-player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50)
+player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3)
 inter = Interaction(player, kbd)
 
 class Circle():
 
-    def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor):
-        self.centerpoint = centerpoint
+    def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
+        self.centerpoint = centerpoint #Vector(-1,0)
         self.radius1 = radius1
         self.linewidth = linewidth
         self.linecolor = linecolor
         self.fillcolor = fillcolor
+        self.vel = vel
 
     def draw(self,canvas):
         canvas.draw_circle(self.centerpoint, self.radius1, self.linewidth, self.linecolor, self.fillcolor)
+    def update(self):
+        self.centerpoint.add(self.vel)
+        self.vel.multiply(0.85)
 
 class Food():
-    def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor):
-        Circle.__init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor)
+    def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
+        Circle.__init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel)
         self.is_visible = True
-
+        
     def draw(self, canvas):
         if self.is_visible:
             Circle.draw(self, canvas)
-
+            #
     def update(self):
         global ballradius
+        #if self.is_visible:
+        #Circle.update(self)
+        #
+        #self.centerpoint.add(self.vel)
         if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls
             if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
@@ -152,6 +169,7 @@ class Food():
                 player.pos.x = CANVAS_DIMS[0]/2
                 player.pos.y = CANVAS_DIMS[1]/2
                 player.radius = 50
+                player.lives -=1
 
 
 
@@ -178,13 +196,24 @@ def enemyspawn(): #make this bigger to increase food
         y = random.randint(radius1, HEIGHT-radius1)
         if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
             if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
-                balls.append(Food((x, y), radius1, 5, 'red', 'Red'))
+                balls.append(Food((x, y), radius1, 5, 'red', 'Red',Vector(-1,-1)))
+
+def ui(canvas):
+    canvas.draw_text(("Score:",int(player.radius)), [1200, 30], 10, "Blue")
+    for i in range(0,player.lives):
+        canvas.draw_image(LIVES_IMG, LIVES_CENTRE, LIVES_DIMS, (20*i*2+20,20), (70,70), img_rot)
+
+def gameOver(canvas):
+    canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
 
 def draw(canvas):
+    
     newlist.clear()
+    canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
     #if player.radius < 1:
     #    player.radius = 20
+    
     inter.update()
     newlist.append(player.pos.x)
     newlist.append(player.pos.y)
@@ -196,8 +225,13 @@ def draw(canvas):
     for ball in balls:
         ball.update()
         ball.draw(canvas)
-
+        
+        
+    ui(canvas)
     print (len(balls))
+
+    if player.lives == 0:
+        gameOver(canvas)
 
 
 for i in range (50):
