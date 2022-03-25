@@ -1,6 +1,8 @@
+# import libraries
 import math, random, sys, simpleguitk as simplegui
 from vectorclass import Vector
 
+# canvas dimensions
 WIDTH, HEIGHT = 1315, 790
 CANVAS_DIMS = (WIDTH, HEIGHT)
 
@@ -30,6 +32,7 @@ img_rot = 0
 
 newlist, balls = [], []
 
+# player class
 class Player:
     global radius
     def __init__(self, pos, radius, lives, score):
@@ -48,9 +51,8 @@ class Player:
     def update(self):
         self.pos.add(self.vel)
         self.vel.multiply(0.85)
-        #self.img_dest_dim = radius
-        #self.pos = ballpos
 
+# keyboard class
 class Keyboard:
     def __init__(self):
         self.right = False
@@ -61,6 +63,7 @@ class Keyboard:
         self.one = False
         self.two = False
 
+    # key down handler
     def keyDown(self, key):
         global STEP
         if key == simplegui.KEY_MAP['right'] or key == simplegui.KEY_MAP['d']:
@@ -78,6 +81,7 @@ class Keyboard:
         elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
             self.two = True
 
+    # key up handler
     def keyUp(self, key):
         global STEP
         STEP = 0
@@ -96,6 +100,7 @@ class Keyboard:
         elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
             self.two = False
 
+# interaction class
 class Interaction:
     def __init__(self, wheel, keyboard):
         self.wheel = wheel
@@ -130,6 +135,7 @@ kbd = Keyboard()
 player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3, 0)
 inter = Interaction(player, kbd)
 
+# circle class
 class Circle:
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
         self.centerpoint = centerpoint #Vector(-1,0)
@@ -146,6 +152,7 @@ class Circle:
         self.centerpoint.add(self.vel)
         self.vel.multiply(0.85)
 
+# food (enemy) classs
 class Food():
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
         Circle.__init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel)
@@ -157,42 +164,40 @@ class Food():
 
     def update(self):
         global ballradius
-        #if self.is_visible:
-        #Circle.update(self)
-        #
-        #self.centerpoint.add(self.vel)
-        if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls
+        if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: # checks if the main sprite has touched the center point of the smaller balls
             if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
                 player.radius = math.sqrt(player.radius**2 + self.radius1**2)
                 player.score += int(player.radius) - 50
-                balls.remove(self) #so radius1 is the radius of the
+                balls.remove(self)
                 enemyspawn()
             else:
-                #player.pos = (250,250)
                 player.radius = 0.001
                 player.pos.x = CANVAS_DIMS[0]/2
                 player.pos.y = CANVAS_DIMS[1]/2
                 player.radius = 50
                 player.lives -=1
 
-def distance(a, b): #finds radius and increases it y the size of the
+def distance(a, b): # finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
-def mousehandler(pos):#this allows the mouse to drag
+# mouse handler
+def mousehandler(pos):# this allows the mouse to drag
     global ballpos, ballcolour
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
 
-def enemyspawn(): #make this bigger to increase food
+# enemy spawn function
+def enemyspawn(): # make this bigger to increase food
         radius1 = random.randint(1,50) # radius of the blob circles
-        x = random.randint(radius1, WIDTH-radius1) #finding position of each circle
+        x = random.randint(radius1, WIDTH-radius1) # finding position of each circle
         y = random.randint(100, HEIGHT-radius1)
         if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
             if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
                 balls.append(Food((x, y), radius1, 5, 'red', 'red',Vector(-1,-1)))
 
+# ui function
 def ui(canvas):
     canvas.draw_text(("Score:", player.score), [1200, 40], 20, "white")
     canvas.draw_text("Lives:", [10, 40], 20, "white")
@@ -200,6 +205,7 @@ def ui(canvas):
     for i in range(0,player.lives):
         canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, (20*i*2+90,30), (40,40), img_rot)
 
+# main menu function
 def mainMenu(canvas):
     
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
@@ -212,6 +218,7 @@ def mainMenu(canvas):
     if kbd.two:
         sys.exit()
 
+# game over function
 def gameOver(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(GAMEOVER_IMAGE, (426, 67), GAMEOVER_IMAGE_DIMS, (650, 250), (852, 135), 0)
@@ -221,12 +228,14 @@ def gameOver(canvas):
         balls.clear()
         for i in range(50):
             enemyspawn()
-        player.score = 0
+        player.score = 0ß
         player.lives = 3
         draw(canvas)
+
     if kbd.two: 
         sys.exit()
 
+# draw handler
 def draw(canvas): 
     newlist.clear()
 
