@@ -1,6 +1,5 @@
-import math, random, os, sys, simpleguitk as simplegui
+import math, random, os, sys, simpleguitk as simplegui , time
 from vectorclass import Vector
-
 
 WIDTH = 1315
 HEIGHT = 790
@@ -35,12 +34,13 @@ balls = []
 
 class Player:
     global radius
-    def __init__(self, pos, radius,lives):
+    def __init__(self, pos, radius, lives, score):
         self.pos = pos
         self.vel = Vector()
         self.radius = radius
         self.colour = 'White'
         self.lives = lives
+        self.score = score
 
     def draw(self, canvas):
         global img_rot
@@ -130,7 +130,7 @@ class Interaction:
             player.pos.x = CANVAS_DIMS[0]-25
 
 kbd = Keyboard()
-player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3)
+player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3, 0)
 inter = Interaction(player, kbd)
 
 class Circle:
@@ -168,6 +168,7 @@ class Food():
             if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
                 player.radius = math.sqrt(player.radius**2 + self.radius1**2)
+                player.score += int(player.radius) - 50
                 balls.remove(self) #so radius1 is the radius of the
                 enemyspawn()
             else:
@@ -203,17 +204,21 @@ def enemyspawn(): #make this bigger to increase food
                 balls.append(Food((x, y), radius1, 5, 'red', 'red',Vector(-1,-1)))
 
 def ui(canvas):
-    canvas.draw_text(("Score:", (int(player.radius) - 50)), [1200, 40], 20, "white")
+    canvas.draw_text(("Score:", player.score), [1200, 40], 20, "white")
     canvas.draw_text("Lives:", [10, 40], 20, "white")
 
     for i in range(0,player.lives):
         canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, (20*i*2+90,30), (40,40), img_rot)
 
 def mainMenu(canvas):
+    
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(LOGO_IMAGE, (503, 117), LOGO_IMAGE_DIMS, (650, 300), (1007, 235), 0)
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
-        
+    if kbd.one:
+        frame.set_draw_handler(draw)
+
+
     if kbd.two:
         sys.exit()
 
@@ -223,13 +228,18 @@ def gameOver(canvas):
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
 
     if kbd.one:
-        os.execv(sys.executable, ['python'] + sys.argv)
+        balls.clear()
+        for i in range(50):
+            enemyspawn()
+        player.score = 0
+        player.lives = 3
+        draw(canvas)
     if kbd.two: 
         sys.exit()
 
-def draw(canvas):
-
+def draw(canvas): 
     newlist.clear()
+
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
     #if player.radius < 1:
@@ -254,14 +264,21 @@ def draw(canvas):
         gameOver(canvas)
 
 
+
+
 for i in range(50):
     enemyspawn()
-
-
+player.score = 0
 frame = simplegui.create_frame('CS1821 Osmos', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('Black')
 frame.set_mousedrag_handler(mousehandler)
-frame.set_draw_handler(draw)
+
+
+
+frame.set_draw_handler(mainMenu)
+
+    
+
 frame.set_keydown_handler(kbd.keyDown)
 frame.set_keyup_handler(kbd.keyUp)
 frame.start()
