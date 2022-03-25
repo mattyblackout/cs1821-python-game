@@ -1,4 +1,4 @@
-import math, random, sys, simpleguitk as simplegui , time
+import math, random, sys, simpleguitk as simplegui
 from vectorclass import Vector
 
 WIDTH = 1315
