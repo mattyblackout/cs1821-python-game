@@ -1,5 +1,6 @@
 import math, random, simpleguitk as simplegui
 from vectorclass import Vector
+import os, sys
 
 WIDTH = 1315
 HEIGHT = 790
@@ -58,6 +59,8 @@ class Keyboard:
         self.space = False
         self.up = False
         self.down = False
+        self.one = False
+        self.two = False
 
     def keyDown(self, key):
         global STEP
@@ -71,6 +74,10 @@ class Keyboard:
             self.up = True
         elif key == simplegui.KEY_MAP['down'] or key == simplegui.KEY_MAP['s']:
             self.down = True
+        elif key == simplegui.KEY_MAP['one'] or key == simplegui.KEY_MAP['1']:
+            self.one = True
+        elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
+            self.two = True
 
 
     def keyUp(self, key):
@@ -86,6 +93,10 @@ class Keyboard:
             self.up = False
         elif key == simplegui.KEY_MAP['down'] or key == simplegui.KEY_MAP['s']:
             self.down = False
+        elif key == simplegui.KEY_MAP['one'] or key == simplegui.KEY_MAP['1']:
+            self.one = False
+        elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
+            self.two = False
 
 class Interaction:
     def __init__(self, wheel, keyboard):
@@ -202,11 +213,19 @@ def ui(canvas):
 def mainMenu(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
 
+    if kbd.right: 
+        draw(canvas)
+
 
 def gameOver(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(GAMEOVER_IMAGE, (426, 67), GAMEOVER_IMAGE_DIMS, (650, 250), (852, 135), 0)
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
+
+    if kbd.one:
+        os.execv(sys.executable, ['python3'] + sys.argv)
+    if kbd.two: 
+        sys.exit()
 
 def draw(canvas):
     newlist.clear()
