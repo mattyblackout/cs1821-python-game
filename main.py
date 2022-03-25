@@ -193,7 +193,7 @@ def enemyspawn(): #make this bigger to increase food
                 balls.append(Food((x, y), radius1, 5, 'red', 'red',Vector(-1,-1)))
 
 def ui(canvas):
-    canvas.draw_text(("Score:",int(player.radius)), [1200, 40], 20, "white")
+    canvas.draw_text(("Score:", (int(player.radius) - 50)), [1200, 40], 20, "white")
     canvas.draw_text("Lives:", [10, 40], 20, "white")
 
     for i in range(0,player.lives):
