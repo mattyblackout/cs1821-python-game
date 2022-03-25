@@ -9,16 +9,18 @@ ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
 ballradius = 20 # edit to make the sprite big/small
 
 LIVES_IMG = simplegui.load_image('https://image.shutterstock.com/image-vector/heart-pixel-icon-vector-illustration-260nw-413867536.jpg')
-LIVES_CENTRE = (100,100)
-LIVES_DIMS = (600, 600)
+LIVES_CENTRE, LIVESDIMS = (100,100), (600, 600)
 
 IMG = simplegui.load_image('https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/05/8d/e8/058de8d2-7963-1c7b-8865-02d52b222aa2/OsmosOSX.png/1200x630bb.png')
-IMG_CENTRE = (300, 300)
-IMG_DIMS = (610, 610)
-
-STEP = 0
+IMG_CENTRE, IMG_DIMS = (300, 300), (610,610)
 
 BACKGROUNDIMG = simplegui.load_image('https://images2.imgbox.com/4a/38/b798aeH2_o.jpg')
+
+GAMEOVER_IMAGE = simplegui.load_image('https://images2.imgbox.com/39/fb/U2OMmElb_o.png')
+PRESSKEY_IMAGE = simplegui.load_image('https://images2.imgbox.com/4f/bc/cLxcNfmt_o.png')
+PRESSKEY_IMAGE_DIMS, GAMEOVER_IMAGE_DIMS = (1139, 178), (852, 135)
+
+STEP = 0
 
 # Global variables
 radius = 100
@@ -197,8 +199,14 @@ def ui(canvas):
     for i in range(0,player.lives):
         canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, (20*i*2+90,30), (40,40), img_rot)
 
+def mainMenu(canvas):
+    canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
+
+
 def gameOver(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
+    canvas.draw_image(GAMEOVER_IMAGE, (426, 67), GAMEOVER_IMAGE_DIMS, (650, 250), (852, 135), 0)
+    canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
 
 def draw(canvas):
     newlist.clear()
@@ -230,7 +238,7 @@ for i in range(50):
     enemyspawn()
 
 
-frame = simplegui.create_frame('Interactions', CANVAS_DIMS[0], CANVAS_DIMS[1])
+frame = simplegui.create_frame('CS1821 Osmos', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('Black')
 frame.set_mousedrag_handler(mousehandler)
 frame.set_draw_handler(draw)
