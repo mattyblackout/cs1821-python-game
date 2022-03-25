@@ -1,8 +1,7 @@
 import math, random, sys, simpleguitk as simplegui
 from vectorclass import Vector
 
-WIDTH = 1315
-HEIGHT = 790
+WIDTH, HEIGHT = 1315, 790
 CANVAS_DIMS = (WIDTH, HEIGHT)
 
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
@@ -29,8 +28,7 @@ img_dest_dim = (radius,radius) # size of sprite
 img_pos = CANVAS_DIMS[0]/2, 2*CANVAS_DIMS[1]/3
 img_rot = 0
 
-newlist = []
-balls = []
+newlist, balls = [], []
 
 class Player:
     global radius
@@ -79,7 +77,6 @@ class Keyboard:
             self.one = True
         elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
             self.two = True
-
 
     def keyUp(self, key):
         global STEP
@@ -179,7 +176,6 @@ class Food():
                 player.radius = 50
                 player.lives -=1
 
-
 def distance(a, b): #finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
@@ -188,12 +184,6 @@ def mousehandler(pos):#this allows the mouse to drag
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
-
-'''def on_ground():
-    if wheel.pos.y == CANVAS_DIMS[1]-70:
-        return True
-    else:
-        return False'''
 
 def enemyspawn(): #make this bigger to increase food
         radius1 = random.randint(1,50) # radius of the blob circles
@@ -215,9 +205,9 @@ def mainMenu(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(LOGO_IMAGE, (503, 117), LOGO_IMAGE_DIMS, (650, 300), (1007, 235), 0)
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
+
     if kbd.one:
         frame.set_draw_handler(draw)
-
 
     if kbd.two:
         sys.exit()
@@ -241,9 +231,6 @@ def draw(canvas):
     newlist.clear()
 
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
-    #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
-    #if player.radius < 1:
-    #    player.radius = 20
     
     inter.update()
     newlist.append(player.pos.x)
@@ -263,22 +250,15 @@ def draw(canvas):
     if player.lives == 0:
         gameOver(canvas)
 
-
-
-
 for i in range(50):
     enemyspawn()
+
 player.score = 0
+
 frame = simplegui.create_frame('CS1821 Osmos', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('Black')
 frame.set_mousedrag_handler(mousehandler)
-
-
-
 frame.set_draw_handler(mainMenu)
-
-    
-
 frame.set_keydown_handler(kbd.keyDown)
 frame.set_keyup_handler(kbd.keyUp)
 frame.start()
