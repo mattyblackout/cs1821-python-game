@@ -9,22 +9,20 @@ CANVAS_DIMS = (WIDTH, HEIGHT)
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
 ballradius = 20 # edit to make the sprite big/small
 
-LIVES_IMG = simplegui.load_image('https://image.shutterstock.com/image-vector/heart-pixel-icon-vector-illustration-260nw-413867536.jpg')
-LIVES_CENTRE, LIVESDIMS = (100,100), (600, 600)
-
+# Player sprite image
 IMG = simplegui.load_image('https://is1-ssl.mzstatic.com/image/thumb/Purple113/v4/05/8d/e8/058de8d2-7963-1c7b-8865-02d52b222aa2/OsmosOSX.png/1200x630bb.png')
 IMG_CENTRE, IMG_DIMS = (300, 300), (610,610)
 
+# Game background image
 BACKGROUNDIMG = simplegui.load_image('https://images2.imgbox.com/4a/38/b798aeH2_o.jpg')
 
+# Images for menu screen and game over screen
 LOGO_IMAGE = simplegui.load_image('https://images2.imgbox.com/1d/dd/4Kj7pUOr_o.png')
 GAMEOVER_IMAGE = simplegui.load_image('https://images2.imgbox.com/39/fb/U2OMmElb_o.png')
 PRESSKEY_IMAGE = simplegui.load_image('https://images2.imgbox.com/4f/bc/cLxcNfmt_o.png')
 LOGO_IMAGE_DIMS, PRESSKEY_IMAGE_DIMS, GAMEOVER_IMAGE_DIMS = (1007, 235), (1139, 178), (852, 135)
 
 STEP = 0
-
-menuActive = True
 
 # Global variables
 radius = 100
@@ -119,7 +117,6 @@ class Interaction:
             self.wheel.vel.multiply(1.1)
             self.wheel.radius-=0.1
 
-
         if player.pos.y >= CANVAS_DIMS[1]-25:
             player.pos.y = CANVAS_DIMS[1]-25
 
@@ -160,7 +157,7 @@ class Food():
     def draw(self, canvas):
         if self.is_visible:
             Circle.draw(self, canvas)
-            #
+
     def update(self):
         global ballradius
         #if self.is_visible:
@@ -184,7 +181,6 @@ class Food():
 
 def distance(a, b): #finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
-
 
 def mousehandler(pos):#this allows the mouse to drag
     global ballpos, ballcolour
@@ -217,8 +213,6 @@ def mainMenu(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(LOGO_IMAGE, (503, 117), LOGO_IMAGE_DIMS, (650, 300), (1007, 235), 0)
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
-
-    #if kbd.one: 
         
     if kbd.two:
         sys.exit()
