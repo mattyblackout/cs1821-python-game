@@ -17,11 +17,14 @@ IMG_CENTRE, IMG_DIMS = (300, 300), (610,610)
 
 BACKGROUNDIMG = simplegui.load_image('https://images2.imgbox.com/4a/38/b798aeH2_o.jpg')
 
+LOGO_IMAGE = simplegui.load_image('https://images2.imgbox.com/1d/dd/4Kj7pUOr_o.png')
 GAMEOVER_IMAGE = simplegui.load_image('https://images2.imgbox.com/39/fb/U2OMmElb_o.png')
 PRESSKEY_IMAGE = simplegui.load_image('https://images2.imgbox.com/4f/bc/cLxcNfmt_o.png')
-PRESSKEY_IMAGE_DIMS, GAMEOVER_IMAGE_DIMS = (1139, 178), (852, 135)
+LOGO_IMAGE_DIMS, PRESSKEY_IMAGE_DIMS, GAMEOVER_IMAGE_DIMS = (1007, 235), (1139, 178), (852, 135)
 
 STEP = 0
+
+menuActive = True
 
 # Global variables
 radius = 100
@@ -212,10 +215,13 @@ def ui(canvas):
 
 def mainMenu(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
+    canvas.draw_image(LOGO_IMAGE, (503, 117), LOGO_IMAGE_DIMS, (650, 300), (1007, 235), 0)
+    canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
 
-    if kbd.right: 
-        draw(canvas)
-
+    #if kbd.one: 
+        
+    if kbd.two:
+        sys.exit()
 
 def gameOver(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
@@ -228,6 +234,7 @@ def gameOver(canvas):
         sys.exit()
 
 def draw(canvas):
+
     newlist.clear()
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
