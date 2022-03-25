@@ -1,8 +1,7 @@
 import math, random, sys, simpleguitk as simplegui , time
 from vectorclass import Vector
 
-WIDTH = 1315
-HEIGHT = 790
+WIDTH, HEIGHT = 1315, 790
 CANVAS_DIMS = (WIDTH, HEIGHT)
 
 ballpos = [CANVAS_DIMS[0] / 2, CANVAS_DIMS[1] / 2]
@@ -29,8 +28,7 @@ img_dest_dim = (radius,radius) # size of sprite
 img_pos = CANVAS_DIMS[0]/2, 2*CANVAS_DIMS[1]/3
 img_rot = 0
 
-newlist = []
-balls = []
+newlist, balls = [], []
 
 class Player:
     global radius
@@ -50,18 +48,6 @@ class Player:
     def update(self):
         self.pos.add(self.vel)
         self.vel.multiply(0.85)
-        #self.img_dest_dim = radius
-        #self.pos = ballpos
-    def AImove(self):
-        posneg = random.randint(1,2)
-        x = random.randint(0,100)
-        y = random.randint(0,100)
-        if posneg == 1:
-            x = x*-1 
-        if posneg == 2:
-            y = y*-1
-        self.vel.add(Vector(x,y))
-
 
 class Keyboard:
     def __init__(self):
@@ -89,7 +75,6 @@ class Keyboard:
             self.one = True
         elif key == simplegui.KEY_MAP['two'] or key == simplegui.KEY_MAP['2']:
             self.two = True
-
 
     def keyUp(self, key):
         global STEP
@@ -141,7 +126,6 @@ class Interaction:
 
 kbd = Keyboard()
 player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3, 0)
-AIplayer = Player(Vector(100, 100), 50 , 3, 0)
 inter = Interaction(player, kbd)
 
 class Circle:
@@ -171,10 +155,7 @@ class Food():
 
     def update(self):
         global ballradius
-        #if self.is_visible:
-        #Circle.update(self)
-        #
-        #self.centerpoint.add(self.vel)
+
         if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls
             if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
@@ -183,13 +164,11 @@ class Food():
                 balls.remove(self) #so radius1 is the radius of the
                 enemyspawn()
             else:
-                #player.pos = (250,250)
                 player.radius = 0.001
                 player.pos.x = CANVAS_DIMS[0]/2
                 player.pos.y = CANVAS_DIMS[1]/2
                 player.radius = 50
                 player.lives -=1
-
 
 class PowerUp():
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
@@ -209,10 +188,7 @@ class PowerUp():
 
     def update(self):
         global ballradius
-        #if self.is_visible:
-        #Circle.update(self)
-        #
-        #self.centerpoint.add(self.vel)
+
         if self.is_visible and distance(newlist, self.centerpoint) <= player.radius*0.5 + self.radius1: #checks if the main sprite has touched the center point of the smaller balls
             if player.radius*0.5 >= self.radius1:
                 self.is_visible = False
@@ -236,12 +212,6 @@ def mousehandler(pos):#this allows the mouse to drag
     ballpos= list(pos)
     ballcolour = "Blue"
     print (ballpos)
-
-'''def on_ground():
-    if wheel.pos.y == CANVAS_DIMS[1]-70:
-        return True
-    else:
-        return False'''
 
 def enemyspawn(): #make this bigger to increase food
         radius1 = random.randint(1,50) # radius of the blob circles
@@ -269,9 +239,9 @@ def mainMenu(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     canvas.draw_image(LOGO_IMAGE, (503, 117), LOGO_IMAGE_DIMS, (650, 300), (1007, 235), 0)
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
+
     if kbd.one:
         frame.set_draw_handler(draw)
-
 
     if kbd.two:
         sys.exit()
@@ -290,6 +260,7 @@ def gameOver(canvas):
         player.score = 0
         player.lives = 3
         draw(canvas)
+
     if kbd.two: 
         sys.exit()
 
@@ -297,18 +268,12 @@ def draw(canvas):
     newlist.clear()
 
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
-    #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
-    #if player.radius < 1:
-    #    player.radius = 20
     
     inter.update()
     newlist.append(player.pos.x)
     newlist.append(player.pos.y)
     print (newlist)
     print(player.radius)
-    AIplayer.update()
-    #AIplayer.AImove()
-    AIplayer.draw(canvas)
     player.update()
 
     player.draw(canvas)
@@ -322,25 +287,17 @@ def draw(canvas):
     if player.lives == 0:
         gameOver(canvas)
 
-
-
-
 for i in range(50):
     enemyspawn()
 for j in range(10):
     powerupspawn()
-AIplayer.AImove()
+
 player.score = 0
+
 frame = simplegui.create_frame('CS1821 Osmos', CANVAS_DIMS[0], CANVAS_DIMS[1])
 frame.set_canvas_background('Black')
 frame.set_mousedrag_handler(mousehandler)
-
-
-
 frame.set_draw_handler(mainMenu)
-
-    
-
 frame.set_keydown_handler(kbd.keyDown)
 frame.set_keyup_handler(kbd.keyUp)
 frame.start()
