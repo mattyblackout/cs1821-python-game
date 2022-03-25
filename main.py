@@ -228,7 +228,7 @@ def gameOver(canvas):
         balls.clear()
         for i in range(50):
             enemyspawn()
-        player.score = 0ß
+        player.score = 0
         player.lives = 3
         draw(canvas)
 
