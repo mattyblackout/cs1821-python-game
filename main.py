@@ -19,7 +19,7 @@ IMG_DIMS = (610, 610)
 STEP = 0
 
 #https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?
-BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/9a/f2/52/9af25223f0696aea6cc6183b0e52a48e.jpg')
+BACKGROUNDIMG = simplegui.load_image('https://images2.imgbox.com/4a/38/b798aeH2_o.jpg')
 
 # Global variables
 radius = 100
