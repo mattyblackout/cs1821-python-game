@@ -26,7 +26,7 @@ STEP = 0
 
 # Global variables
 radius = 100
-img_dest_dim = (radius,radius) #size of sprite
+img_dest_dim = (radius,radius) # size of sprite
 img_pos = CANVAS_DIMS[0]/2, 2*CANVAS_DIMS[1]/3
 img_rot = 0
 
