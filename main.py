@@ -1,6 +1,6 @@
-import math, random, simpleguitk as simplegui
+import math, random, os, sys, simpleguitk as simplegui
 from vectorclass import Vector
-import os, sys
+
 
 WIDTH = 1315
 HEIGHT = 790
