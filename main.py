@@ -223,7 +223,7 @@ def gameOver(canvas):
     canvas.draw_image(PRESSKEY_IMAGE, (570, 89), PRESSKEY_IMAGE_DIMS, (650, 450), (1139, 178), 0)
 
     if kbd.one:
-        os.execv(sys.executable, ['python3'] + sys.argv)
+        os.execv(sys.executable, ['python'] + sys.argv)
     if kbd.two: 
         sys.exit()
 
