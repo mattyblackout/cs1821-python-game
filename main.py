@@ -17,11 +17,9 @@ IMG = simplegui.load_image('https://is1-ssl.mzstatic.com/image/thumb/Purple113/v
 IMG_CENTRE = (300, 300)
 IMG_DIMS = (610, 610)
 
-
-
 STEP = 0
-#https://spng.pngfind.com/pngs/s/100-1001849_pixelated-png-heart-pixel-art-png-transparent-png.png
-#http://commondatastorage.googleapis.com/codeskulptor-assets/gutenberg.jpg
+
+#https://images.unsplash.com/photo-1534796636912-3b95b3ab5986?
 BACKGROUNDIMG = simplegui.load_image('https://i.pinimg.com/originals/9a/f2/52/9af25223f0696aea6cc6183b0e52a48e.jpg')
 
 # Global variables
@@ -54,7 +52,6 @@ class Player:
         #self.pos = ballpos
 
 class Keyboard:
-
     def __init__(self):
         self.right = False
         self.left = False
@@ -89,7 +86,6 @@ class Keyboard:
             self.up = False
         elif key == simplegui.KEY_MAP['down'] or key == simplegui.KEY_MAP['s']:
             self.down = False
-
 
 class Interaction:
     def __init__(self, wheel, keyboard):
@@ -126,8 +122,7 @@ kbd = Keyboard()
 player = Player(Vector(CANVAS_DIMS[0]/2, CANVAS_DIMS[1]/2), 50 , 3)
 inter = Interaction(player, kbd)
 
-class Circle():
-
+class Circle:
     def __init__(self, centerpoint, radius1, linewidth, linecolor, fillcolor, vel):
         self.centerpoint = centerpoint #Vector(-1,0)
         self.radius1 = radius1
@@ -138,6 +133,7 @@ class Circle():
 
     def draw(self,canvas):
         canvas.draw_circle(self.centerpoint, self.radius1, self.linewidth, self.linecolor, self.fillcolor)
+       
     def update(self):
         self.centerpoint.add(self.vel)
         self.vel.multiply(0.85)
@@ -172,7 +168,6 @@ class Food():
                 player.lives -=1
 
 
-
 def distance(a, b): #finds radius and increases it y the size of the
     return math.sqrt( (a[1] - b[1]) ** 2 + (a[0] - b[0]) ** 2)
 
@@ -183,31 +178,31 @@ def mousehandler(pos):#this allows the mouse to drag
     ballcolour = "Blue"
     print (ballpos)
 
-
 '''def on_ground():
     if wheel.pos.y == CANVAS_DIMS[1]-70:
         return True
     else:
         return False'''
-def enemyspawn(): #make this bigger to increase food
 
+def enemyspawn(): #make this bigger to increase food
         radius1 = random.randint(1,50) # radius of the blob circles
         x = random.randint(radius1, WIDTH-radius1) #finding position of each circle
         y = random.randint(100, HEIGHT-radius1)
         if x > ((WIDTH/2)+55) or x < ((WIDTH/2)-55):
             if y > ((HEIGHT/2)+55) or y < ((HEIGHT/2)-55):
-                balls.append(Food((x, y), radius1, 5, 'red', 'Red',Vector(-1,-1)))
+                balls.append(Food((x, y), radius1, 5, 'red', 'red',Vector(-1,-1)))
 
 def ui(canvas):
-    canvas.draw_text(("Score:",int(player.radius)), [1200, 30], 10, "Blue")
+    canvas.draw_text(("Score:",int(player.radius)), [1200, 30], 20, "white")
+    canvas.draw_text("Lives:", [10, 40], 20, "white")
+
     for i in range(0,player.lives):
-        canvas.draw_image(LIVES_IMG, LIVES_CENTRE, LIVES_DIMS, (20*i*2+20,20), (70,70), img_rot)
+        canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, (20*i*2+90,30), (40,40), img_rot)
 
 def gameOver(canvas):
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
 
 def draw(canvas):
-    
     newlist.clear()
     canvas.draw_image(BACKGROUNDIMG, (10, 10), (2650,1600), [10, 10], (2650,1600))
     #canvas.draw_image(IMG, IMG_CENTRE, IMG_DIMS, ballpos, img_dest_dim, img_rot)
@@ -226,7 +221,6 @@ def draw(canvas):
         ball.update()
         ball.draw(canvas)
         
-        
     ui(canvas)
     print (len(balls))
 
@@ -234,11 +228,8 @@ def draw(canvas):
         gameOver(canvas)
 
 
-for i in range (50):
+for i in range(50):
     enemyspawn()
-
-#This generates the food
-
 
 
 frame = simplegui.create_frame('Interactions', CANVAS_DIMS[0], CANVAS_DIMS[1])
