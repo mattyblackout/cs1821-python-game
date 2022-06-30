@@ -1,5 +1,5 @@
 import math, random, sys, simpleguitk as simplegui
-from vectorclass import Vector
+from vectorclass import Vector 
 
 WIDTH, HEIGHT = 1315, 790
 CANVAS_DIMS = (WIDTH, HEIGHT)
