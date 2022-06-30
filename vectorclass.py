@@ -1,4 +1,4 @@
-import math
+import math 
 
 # The Vector class
 class Vector:
